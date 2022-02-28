@@ -63,7 +63,11 @@ async function main() {
 	// have a defined route and therefore a HTTP status code 404 is sent
 	// and an error page shown
 	app.use((req, res) => {
-		return res.status(404).send('Not found');
+		res.status(404).render('error', {
+			title: 'Error',
+			code: 404,
+			msg: 'Page Not Found'
+		});
 	});
 
 	// Start the server

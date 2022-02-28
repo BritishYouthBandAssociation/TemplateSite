@@ -6,7 +6,9 @@ const router = express.Router();
 
 // Set up default route to check server is running
 router.get('/', (req, res) => {
-	return res.send(`I'm here!`);
+	return res.render('index', {
+		title: 'Home'
+	});
 });
 
 module.exports = {
