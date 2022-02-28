@@ -18,7 +18,8 @@
 	"homepage": "https://github.com/BritishYouthBandAssociation/TemplateSite#readme",
 	"devDependencies": {
 		"@byba/eslint-config": "^1.0.0",
-		"eslint": "^8.10.0"
+		"eslint": "^8.10.0",
+		"husky": "^7.0.4"
 	},
 	"dependencies": {
 		"express": "^4.17.3",
