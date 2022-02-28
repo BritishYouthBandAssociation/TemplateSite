@@ -20,6 +20,7 @@
 		"eslint": "^8.10.0"
 	},
 	"dependencies": {
-		"express": "^4.17.3"
+		"express": "^4.17.3",
+		"serve-favicon": "^2.5.0"
 	}
 }
