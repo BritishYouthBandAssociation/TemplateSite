@@ -2,10 +2,31 @@
 
 // Import modules
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 
 // Import custom modules
 const importJSON = require('./lib/importJSON');
+
+/**
+ * loadRoutes() Loads all of the routes from /routers into a map
+ *
+ * @return {Array<Array<String, Object>>} All of the routes
+ */
+function loadRoutes() {
+	const routes = [];
+
+	const routeFiles =
+		fs.readdirSync(path.join(__dirname, 'routes'))
+			.filter(file => file.endsWith('.js'));
+
+	for (const file of routeFiles) {
+		const route = require(path.join(__dirname, 'routes', file));
+		routes.push([ route.root, route.router ]);
+	}
+
+	return routes;
+}
 
 async function main() {
 	// Initialise express app
@@ -19,10 +40,9 @@ async function main() {
 		path.join(__dirname, 'public/assets/favicon.ico')));
 	app.use('/', express.static(path.join(__dirname, 'public')));
 
-	// Set up default route to check server is running
-	app.get('/', (req, res) => {
-		return res.send(`I'm here!`);
-	});
+	// Add external routers to express
+	for (const route of loadRoutes())
+		app.use(route[0], route[1]);
 
 	// If the request gets to the bottom of the route stack, it doesn't
 	// have a defined route and therefore a HTTP status code 404 is sent
