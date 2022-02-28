@@ -2,6 +2,7 @@
 
 // Import modules
 const express = require('express');
+const path = require('path');
 
 // Import custom modules
 const importJSON = require('./lib/importJSON');
@@ -12,6 +13,11 @@ async function main() {
 
 	// Import configuration
 	const serverOptions = importJSON('server');
+
+	// Set up routes for static files
+	app.use(serveFavicon(
+		path.join(__dirname, 'public/assets/favicon.ico')));
+	app.use('/', express.static(path.join(__dirname, 'public')));
 
 	// Set up default route to check server is running
 	app.get('/', (req, res) => {
