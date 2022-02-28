@@ -1,0 +1,22 @@
+{
+	"name": "sitetemplate",
+	"version": "1.0.0",
+	"description": "A skeleton that allows sites to be created with everything that they need to get up and running quickly with minimum fuss.",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BritishYouthBandAssociation/TemplateSite.git"
+	},
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/BritishYouthBandAssociation/TemplateSite/issues"
+	},
+	"homepage": "https://github.com/BritishYouthBandAssociation/TemplateSite#readme",
+	"devDependencies": {
+		"eslint": "^8.10.0"
+	}
+}
