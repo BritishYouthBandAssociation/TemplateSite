@@ -36,6 +36,10 @@ async function main() {
 	// Import configuration
 	const serverOptions = importJSON('server');
 
+	// Set up parsers to allow access to POST bodies
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: true }));
+
 	// Set up routes for static files
 	app.use(serveFavicon(
 		path.join(__dirname, 'public/assets/favicon.ico')));
