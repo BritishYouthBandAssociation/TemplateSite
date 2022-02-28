@@ -1,14 +1,17 @@
 'use strict';
 
-// Import required modules
+// Import modules
 const express = require('express');
 
-// Set up constants
-const PORT = 5000;
+// Import custom modules
+const importJSON = require('./lib/importJSON');
 
 async function main() {
 	// Initialise express app
 	const app = express();
+
+	// Import configuration
+	const serverOptions = importJSON('server');
 
 	// Set up default route to check server is running
 	app.get('/', (req, res) => {
@@ -23,8 +26,8 @@ async function main() {
 	});
 
 	// Start the server
-	app.listen(PORT, () => {
-		console.log(`Server listening on :${PORT}`);
+	app.listen(serverOptions.port, () => {
+		console.log(`Server listening on :${serverOptions.port}`);
 	});
 }
 
