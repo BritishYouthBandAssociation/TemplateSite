@@ -45,3 +45,4 @@ No site-specific files, colours or configurations should be committed.
 4. Using a command line, run `gulp`. This will:
    - Copy all sample configurations to their non-sample counterpart
    - Prompt you to edit the config values to suit your environment
+   - Prompt you to overwrite the template readme with a site specific one
