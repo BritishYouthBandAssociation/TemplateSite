@@ -131,8 +131,7 @@ function overwriteReadme(cb) {
 		console.log(chalk.green('\nReadme populated, see below\n'));
 		console.log(newReadme);
 
-		happy = prompt('Finish editing? (Y/n)? ')
-			!== 'n';
+		happy = prompt('Finish editing? (Y/n)? ') !== 'n';
 	}
 
 	fs.writeFileSync(readmePath, newReadme);
