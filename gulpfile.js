@@ -1,5 +1,6 @@
 'use strict';
 
+const chalk = require('chalk');
 const { src, dest, series } = require('gulp');
 const rename = require('gulp-rename');
 const fs = require('fs');
@@ -27,7 +28,7 @@ function copyConfig() {
 
 function setConfig(cb) {
 	const writeConfig = (file, contents) => {
-		console.log(`Writing config to ${file}.json`);
+		console.log(chalk.green(`Writing new config to ${file}.json`));
 
 		fs.writeFileSync(
 			path.join(__dirname, 'config', `${file}.json`),
@@ -40,9 +41,11 @@ function setConfig(cb) {
 			.filter(file => !file.endsWith('.sample.json'))
 			.map(file => file.split('.json')[0]);
 
-	console.log('\nEditing config files');
-	console.log('\nWhen prompted for a new value, press enter to keep ' +
-		'the existing one');
+	const message = '\nEditing config files\n\nWhen promped for a ' +
+		`new value, press ${chalk.blue('<return>')} to keep the ` +
+		'existing one';
+
+	console.log(chalk.green(message));
 
 	for (const file of configFiles) {
 		const contents = importJSON(file);
@@ -82,4 +85,62 @@ function setConfig(cb) {
 	cb();
 }
 
-exports.default = series(cleanConfig, copyConfig, setConfig);
+function overwriteReadme(cb) {
+	const genTag = (key, tag = '-!-') => `${tag}${key}${tag}`;
+
+	const placeholders = [
+		{
+			tag: 'REPONAME',
+			question: 'Github repository name'
+		},
+		{
+			tag: 'SITENAME',
+			question: 'Site name'
+		},
+		{
+			tag: 'PURPOSE',
+			question: 'Site purpose (eg. A site for ...)'
+		}
+	];
+
+	const readmePath = path.join(__dirname, 'README.md');
+	const templatePath = path.join(__dirname, 'TEMPLATE_README.md');
+
+	const readme = fs.readFileSync(readmePath, 'utf8');
+	const template = fs.readFileSync(templatePath, 'utf8');
+
+	// Readme already overwritten
+	if (!readme.startsWith('# TemplateSite'))
+		return cb();
+
+	console.log(
+		chalk.green(
+			'Overwriting template README file, enter details below.'
+		)
+	);
+
+	let newReadme = '';
+	let happy = false;
+	while (!happy) {
+		newReadme = template;
+		placeholders.forEach(({ tag, question }) => {
+			const value = prompt(`${question}: `);
+			newReadme = newReadme.replaceAll(genTag(tag), value);
+		});
+
+		console.log(chalk.green('\nReadme populated, see below\n'));
+		console.log(newReadme);
+
+		happy = prompt('Finish editing? (Y/n)? ')
+			!== 'n';
+	}
+
+	fs.writeFileSync(readmePath, newReadme);
+	console.log(chalk.green('Written new README.md'));
+
+	cb();
+}
+
+exports.default = series(cleanConfig, copyConfig, setConfig, overwriteReadme);
+
+exports.readme = overwriteReadme;
