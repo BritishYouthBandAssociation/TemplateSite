@@ -30,7 +30,7 @@ function loadRoutes() {
 	return routes;
 }
 
-async function main() {
+function main() {
 	// Initialise express app
 	const app = express();
 
@@ -60,9 +60,11 @@ async function main() {
 	for (const route of loadRoutes())
 		app.use(route[0], route[1]);
 
-	// If the request gets to the bottom of the route stack, it doesn't
-	// have a defined route and therefore a HTTP status code 404 is sent
-	// and an error page shown
+	/*
+	 * If the request gets to the bottom of the route stack, it doesn't
+	 * have a defined route and therefore a HTTP status code 404 is sent
+	 * and an error page shown
+	 */
 	app.use((req, res) => {
 		res.status(404).render('error', {
 			title: 'Error',
@@ -77,4 +79,4 @@ async function main() {
 	});
 }
 
-main().catch(console.error);
+main();
