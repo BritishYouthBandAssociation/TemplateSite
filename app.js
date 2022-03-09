@@ -7,8 +7,11 @@ const fs = require('fs');
 const path = require('path');
 const serveFavicon = require('serve-favicon');
 
-// Import custom modules
-const importJSON = require('./lib/importJSON');
+// Initialise library path
+const libPath = process.env.LIB_PATH ?? '../lib';
+
+// Import library functions
+const { helpers: { ConfigHelper } } = require(libPath);
 
 /**
  * loadRoutes() Loads all of the routes from /routers into a map
@@ -34,7 +37,7 @@ function main() {
 	const app = express();
 
 	// Import configuration
-	const serverOptions = importJSON('server');
+	const serverOptions = ConfigHelper.importJSON(path.join(__dirname, 'config'), 'server');
 
 	// Set up handlebars templating engine
 	app.engine(
