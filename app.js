@@ -18,9 +18,8 @@ const importJSON = require('./lib/importJSON');
 function loadRoutes() {
 	const routes = [];
 
-	const routeFiles =
-		fs.readdirSync(path.join(__dirname, 'routes'))
-			.filter(file => file.endsWith('.js'));
+	const routeFiles = fs.readdirSync(path.join(__dirname, 'routes'))
+		.filter(file => file.endsWith('.js'));
 
 	for (const file of routeFiles) {
 		const route = require(path.join(__dirname, 'routes', file));
@@ -57,8 +56,9 @@ function main() {
 	app.use('/', express.static(path.join(__dirname, 'public')));
 
 	// Add external routers to express
-	for (const route of loadRoutes())
+	for (const route of loadRoutes()) {
 		app.use(route[0], route[1]);
+	}
 
 	/*
 	 * If the request gets to the bottom of the route stack, it doesn't
