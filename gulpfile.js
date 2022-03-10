@@ -10,10 +10,9 @@ const prompt = require('prompt-sync')({ sigint: true });
 const del = require('del');
 
 function cleanConfig() {
-	const configFiles =
-		fs.readdirSync(path.join(__dirname, 'config'))
-			.filter(file => !file.endsWith('.sample.json'))
-			.map(file => `./config/${file}`);
+	const configFiles = fs.readdirSync(path.join(__dirname, 'config'))
+		.filter(file => !file.endsWith('.sample.json'))
+		.map(file => `./config/${file}`);
 
 	return del(configFiles);
 }
@@ -36,14 +35,13 @@ function setConfig(cb) {
 		);
 	};
 
-	const configFiles =
-		fs.readdirSync(path.join(__dirname, 'config'))
-			.filter(file => !file.endsWith('.sample.json'))
-			.map(file => file.split('.json')[0]);
+	const configFiles = fs.readdirSync(path.join(__dirname, 'config'))
+		.filter(file => !file.endsWith('.sample.json'))
+		.map(file => file.split('.json')[0]);
 
-	const message = '\nEditing config files\n\nWhen promped for a ' +
-		`new value, press ${chalk.blue('<return>')} to keep the ` +
-		'existing one';
+	const message = '\nEditing config files\n\nWhen promped for a '
+		+ `new value, press ${chalk.blue('<return>')} to keep the `
+		+ 'existing one';
 
 	console.log(chalk.green(message));
 
@@ -54,18 +52,18 @@ function setConfig(cb) {
 		console.log('Current contents:');
 		console.log(contents);
 
-		const answer =
-			prompt('Would you like to edit the config? (y/N) ');
+		const answer = prompt('Would you like to edit the config? (y/N) ');
 
-		if (answer !== 'y')
+		if (answer !== 'y') {
 			continue;
+		}
 
 		for (const [ k, v ] of Object.entries(contents)) {
-			let value =
-				prompt(` - ${k} (${v}): `).trim();
+			let value = prompt(` - ${k} (${v}): `).trim();
 
-			if (value.length === 0)
+			if (value.length === 0) {
 				continue;
+			}
 
 			switch (typeof v) {
 				case 'number':
@@ -110,8 +108,9 @@ function overwriteReadme(cb) {
 	const template = fs.readFileSync(templatePath, 'utf8');
 
 	// Readme already overwritten
-	if (!readme.startsWith('# TemplateSite'))
+	if (!readme.startsWith('# TemplateSite')) {
 		return cb();
+	}
 
 	console.log(
 		chalk.green(
