@@ -5,9 +5,14 @@ const { src, dest, series } = require('gulp');
 const rename = require('gulp-rename');
 const fs = require('fs');
 const path = require('path');
-const importJSON = require(path.join(__dirname, 'lib', 'importJSON'));
 const prompt = require('prompt-sync')({ sigint: true });
 const del = require('del');
+
+// Initialise library path
+const libPath = process.env.LIB_PATH ?? '../lib';
+
+// Import library functions
+const { helpers: { ConfigHelper } } = require(libPath);
 
 function cleanConfig() {
 	const configFiles = fs.readdirSync(path.join(__dirname, 'config'))
@@ -46,7 +51,7 @@ function setConfig(cb) {
 	console.log(chalk.green(message));
 
 	for (const file of configFiles) {
-		const contents = importJSON(file);
+		const contents = ConfigHelper.importJSON(path.join(__dirname, 'config'), file);
 
 		console.log(`\nConsidering ${file}.json`);
 		console.log('Current contents:');
